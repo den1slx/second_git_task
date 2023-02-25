@@ -40,6 +40,23 @@ def create_dates_archive(path, token):
         dates.write(text)
 
 
+def fetch_spacex_last_launch(
+    path='latest_launch',
+    id='latest',
+    name='SpaceX_',
+):
+    url = f'https://api.spacexdata.com/v5/launches/{id}'
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        links = response.json()['links']['flickr']['original']
+        for index, link in enumerate(links):
+            format = get_file_format_and_name(link)[0]
+            downloader(path, link, name=f'{name}{index}', format=format)
+    except requests.exceptions.HTTPError:
+        pass
+
+
 def epic_images(path, date, token):
     url = f'https://api.nasa.gov/EPIC/api/natural/date/{date}'
     headers = {
@@ -79,7 +96,8 @@ def create_parser():
         help='your path where to save',
     )
     parser.add_argument(
-        'date',
+        '-d',
+        '--date',
         help='date formate YYYY-MM-DD'
     )
     parser.add_argument(
@@ -87,6 +105,11 @@ def create_parser():
         '--archive',
         help='create archive_dates.txt with available dates',
         action='store_true'
+    )
+    parser.add_argument(
+        '--id',
+        help='launch id',
+        default='latest'
     )
 
     return parser
@@ -97,8 +120,9 @@ def main():
     token = os.environ['NASA_TOKEN']
     parser = create_parser()
     namespace = parser.parse_args()
+    fetch_spacex_last_launch(path=f'{namespace.path}/launch_{namespace.id}', id=namespace.id)
     epic_images(
-        namespace.path,
+        f'{namespace.path}/epic/{namespace.date}',
         namespace.date,
         token,
     )
