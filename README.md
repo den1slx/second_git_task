@@ -1,12 +1,9 @@
-# Download fhotos
+# Download photos
 be added later
 
-## Download fhotos from NASA
-Скачиваем картинки с помощью [NASA](https://api.nasa.gov/)
 
 
-
-### Установка
+## Установка
 
 Токен должен быть получен из окружения. (.env файл должен содержать переменную NASA_TOKEN='ваштокен')  
 Получите токен [здесь](https://api.nasa.gov/) и запишите его в переменную NASA_TOKEN.
@@ -18,25 +15,41 @@ pip install -r requirements.txt
 ```
 
 
-### Использование
+## Использование
 
 * Получаем подсказку
 ```
 python main.py -h
 ```
-* Получаем текстовый файл с датами.
-Указываем путь куда сохраняем файл и дату
- (можно любую дату например 0000-00-00):
+#### Download photos from NASA
+Скачиваем картинки с помощью [NASA](https://api.nasa.gov/)
+
+* Получаем текстовый файл с датами.  
+**Всегда** указываем путь куда сохраняем файл
 ```
-python main.py new_folder 0000-00-00 -a
+python main.py new_folder -a
 ```
 * Скачиваем картинки.
 Используем любую дату из файла с датами
 и скачиваем все картинки за эту дату
 ```
-python main.py new_folder 2023-02-24
+python main.py new_folder -d 2023-02-24
 ```
 
+#### Downloads photo from SpaceX
+Скачиваем фото по id запуска
+
+## Использование
+
+Указываем путь и id
+```
+python fetch_spacex_images.py new_folder --id 5eb87d0effd86e000604b35c
+```
+Чтобы скачать фото последнего запуска указываем только путь:
+```
+python fetch_spacex_images.py new_folder
+```
+* Не в каждом запуске делаются фото
 
 ### Цель проекта
 Код написан в образовательных целях на онлайн-курсе для веб-разработчиков [dvmn.org](https://dvmn.org/).
