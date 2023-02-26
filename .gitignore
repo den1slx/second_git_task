@@ -1,2 +1,3 @@
 .env
 .idle
+__pycache__
