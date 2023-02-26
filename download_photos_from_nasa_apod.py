@@ -23,46 +23,52 @@ def apod_images(path, token, count=None, date=False, start_date=None, end_date=i
         path = f'{path}/apod_images/{mod}'
     else:
         path = f'{path}/apod_images'
-    if count is True:
-        headers['count'] = count
-        response = requests.get(url, headers)
-        response.raise_for_status()
-        links_list = response.json()
-        for link in links_list:
-            extend = get_file_extend(link[f'{mod}url'])
-            name = get_file_name(link[f'{mod}url'])
+    try:
+        if count is not None:
+            headers['count'] = count
+            response = requests.get(url, headers)
+            response.raise_for_status()
+            links_list = response.json()
+            for link in links_list:
+                url = link[f'{mod}url']
+                extend = get_file_extend(url)
+                name = get_file_name(url)
+                downloader(
+                    path,
+                    url,
+                    name=name,
+                    extend=extend,
+                )
+        elif date is True:
+            headers['date'] = date
+            response = requests.get(url, headers)
+            response.raise_for_status()
+            today_photo = response.json()[f'{mod}url']
+            extend = get_file_extend(today_photo)
+            name = get_file_name(today_photo)
             downloader(
                 path,
-                link['{mod}url'],
+                today_photo,
                 name=name,
                 extend=extend,
             )
-    elif date is True:
-        headers['date'] = date
-        response = requests.get(url, headers)
-        today_photo = response.json()[f'{mod}url']
-        extend = get_file_extend(today_photo)
-        name = get_file_name(today_photo)
-        downloader(
-            path,
-            today_photo,
-            name=name,
-            extend=extend,
-        )
-    elif start_date is not None:
-        headers['start_date'] = start_date
-        headers['end_date'] = end_date
-        response = requests.get(url, headers)
-        photos = response.json()
-        for photo in photos:
-            extend = get_file_extend(photo[f'{mod}url'])
-            name = get_file_name(photo[f'{mod}url'])
-            downloader(
-                path,
-                photo[f'{mod}url'],
-                name=f'{mod}{name}',
-                extend=extend,
-            )
+        elif start_date is not None:
+            headers['start_date'] = start_date
+            headers['end_date'] = end_date
+            response = requests.get(url, headers)
+            response.raise_for_status()
+            photos = response.json()
+            for photo in photos:
+                extend = get_file_extend(photo[f'{mod}url'])
+                name = get_file_name(photo[f'{mod}url'])
+                downloader(
+                    path,
+                    photo[f'{mod}url'],
+                    name=f'{mod}{name}',
+                    extend=extend,
+                )
+    except requests.exceptions.HTTPError:
+        pass
 
 
 def create_parser():
