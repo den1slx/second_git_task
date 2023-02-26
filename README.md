@@ -19,7 +19,7 @@ pip install -r requirements.txt
 
 * Получаем подсказку
 ```
-python main.py -h
+python download_photos_from_nasa.py -h
 ```
 #### Download photos from NASA
 Скачиваем картинки с помощью [NASA](https://api.nasa.gov/)
@@ -27,13 +27,13 @@ python main.py -h
 * Получаем текстовый файл с датами.  
 **Всегда** указываем путь куда сохраняем файл
 ```
-python main.py new_folder -a
+python download_photos_from_nasa.py new_folder -a
 ```
 * Скачиваем картинки.
 Используем любую дату из файла с датами
 и скачиваем все картинки за эту дату
 ```
-python main.py new_folder -d 2023-02-24
+python download_photos_from_nasa.py new_folder -d 2023-02-24
 ```
 
 #### Downloads photo from SpaceX
