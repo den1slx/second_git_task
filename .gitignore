@@ -1,3 +1,4 @@
 .env
 .idle
 __pycache__
+/test_dir
