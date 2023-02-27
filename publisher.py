@@ -22,7 +22,7 @@ def create_parser():
 def publisher(token, chat_id, path, image, period=True):
     bot = telegram.Bot(token=token)
     if period is True:
-        if '.' in image:
+        if '.' in image and '.txt' not in image:
             with open(f'{path}\\{image}', 'rb') as foto:
                 bot.send_photo(chat_id=chat_id, photo=foto)
         else:
