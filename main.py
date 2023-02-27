@@ -9,8 +9,11 @@ def main():
     load_dotenv()
     token = os.environ['TG_TOKEN']
     chat_id = os.environ['CHAT_ID']
-    path = os.environ['PATH_TO_FILES']
-    sleeptime = int(os.environ['PUBLISH_TIME'])
+    try:
+        path = os.environ['PATH_TO_FILES']
+        sleeptime = int(os.environ['PUBLISH_TIME'])
+    except KeyError:
+        sleeptime = 14400
     fullpaths = adress_names(path)
     while True:
         shuffle(fullpaths)
