@@ -81,10 +81,6 @@ def create_parser():
         default=None,
     )
     parser.add_argument(
-        'path',
-        help='path to save',
-    )
-    parser.add_argument(
         '-d',
         '--date',
         default=None,
@@ -114,10 +110,11 @@ def create_parser():
 def main():
     load_dotenv()
     token = os.environ['NASA_TOKEN']
+    path = os.environ['PATH_TO_FILES']
     parser = create_parser()
     namespace = parser.parse_args()
     apod_images(
-        namespace.path,
+        path,
         token,
         namespace.count,
         namespace.date,

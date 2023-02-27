@@ -49,10 +49,6 @@ def get_file_name(url):
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        'path',
-        help='your path where to save',
-    )
-    parser.add_argument(
         'url',
         help='date formate YYYY-MM-DD',
         default='0000-00-00'
@@ -78,10 +74,11 @@ def create_parser():
 
 
 def main():
+    path = os.environ('PATH_TO_FILES')
     parser = create_parser()
     namespace = parser.parse_args()
     downloader(
-        namespace.path,
+        path,
         namespace.url,
         namespace.name,
         namespace.extend,

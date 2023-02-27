@@ -43,10 +43,6 @@ def epic_images(path, date, token):
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        'path',
-        help='your path where to save',
-    )
-    parser.add_argument(
         '-d',
         '--date',
         help='date formate YYYY-MM-DD',
@@ -63,16 +59,17 @@ def create_parser():
 
 def main():
     load_dotenv()
+    path = os.environ['PATH_TO_FILES']
     token = os.environ['NASA_TOKEN']
     parser = create_parser()
     namespace = parser.parse_args()
     epic_images(
-        f'{namespace.path}/epic/{namespace.date}',
+        f'{path}/epic/{namespace.date}',
         namespace.date,
         token,
     )
     if namespace.archive is True:
-        create_dates_archive(namespace.path, token)
+        create_dates_archive(path, token)
 
 
 if __name__ == '__main__':
