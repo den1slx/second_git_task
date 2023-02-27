@@ -12,7 +12,7 @@ def is_today():
     return today
 
 
-def apod_images(path, token, count=None, date=False, start_date=None, end_date=is_today(), hd=False):
+def apod_images(path, token, count=None, date=None, start_date=None, end_date=is_today(), hd=False):
     url = 'https://api.nasa.gov/planetary/apod'
     headers = {
         'api_key': token,
@@ -39,7 +39,7 @@ def apod_images(path, token, count=None, date=False, start_date=None, end_date=i
                     name=name,
                     extend=extend,
                 )
-        elif date is True:
+        elif date is not None:
             headers['date'] = date
             response = requests.get(url, headers)
             response.raise_for_status()
@@ -84,6 +84,7 @@ def create_parser():
         '-d',
         '--date',
         default=None,
+        help='date format YYYY-MM-DD'
     )
     parser.add_argument(
         '-sd',
