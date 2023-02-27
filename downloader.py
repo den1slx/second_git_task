@@ -5,7 +5,11 @@ from pathlib import Path
 from urllib.parse import urlsplit, unquote
 
 
-def downloader(path, url, name, extend, token=None):
+def downloader(path, url, name=None, extend=None, token=None):
+    if name is None:
+        name = get_file_name(url)
+    if extend is None:
+        extend = get_file_extend(url)
     images = Path(path)
     images.mkdir(parents=True, exist_ok=True)
     try:
@@ -50,41 +54,38 @@ def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         'url',
-        help='date formate YYYY-MM-DD',
-        default='0000-00-00'
+        help='your url',
     )
     parser.add_argument(
-        '-n',
-        '--name',
+        'path',
+        help='path to save',
+    )
+    parser.add_argument(
+        'name',
         help='Name downloading file',
-        default=get_file_name(parser.parse_args().url),
     )
     parser.add_argument(
         'extend',
         help='extend downloading file',
-        default=get_file_extend(parser.parse_args().url)
     )
     parser.add_argument(
         '-t',
         '--token',
         help='Your token. If not indicate ignored.',
-        default=None,
     )
     return parser
 
 
 def main():
-    path = os.environ('PATH_TO_FILES')
     parser = create_parser()
     namespace = parser.parse_args()
     downloader(
-        path,
+        namespace.path,
         namespace.url,
         namespace.name,
         namespace.extend,
         namespace.token,
     )
-    pass
 
 
 if __name__ == '__main__':
