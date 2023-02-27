@@ -1,23 +1,8 @@
 from random import shuffle
-from publisher import publisher
+from publisher import publisher, adress_names
 import os
 from time import sleep
 from dotenv import load_dotenv
-
-
-def adress_names(path, period=True):
-    names = os.walk(path)
-    paths = []
-    for adress, dirs, files in names:
-        for names in files:
-            if period is True:
-                if '.' in names:
-                    paths.append((adress, names))
-                else:
-                    pass
-            else:
-                paths.append((adress, names))
-    return paths
 
 
 def main():

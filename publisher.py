@@ -19,6 +19,21 @@ def create_parser():
     return parser
 
 
+def adress_names(path, period=True):
+    names = os.walk(path)
+    paths = []
+    for adress, dirs, files in names:
+        for names in files:
+            if period is True:
+                if '.' in names:
+                    paths.append((adress, names))
+                else:
+                    pass
+            else:
+                paths.append((adress, names))
+    return paths
+
+
 def publisher(token, chat_id, path, image, period=True):
     bot = telegram.Bot(token=token)
     if period is True:
