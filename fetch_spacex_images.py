@@ -1,5 +1,5 @@
 import os
-
+from dotenv import load_dotenv
 import requests
 import argparse
 from downloader import downloader, get_file_extend
@@ -26,6 +26,7 @@ def fetch_spacex_last_launch(
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        '-id',
         '--id',
         help='launch id',
         default='latest'
@@ -34,6 +35,7 @@ def create_parser():
 
 
 def main():
+    load_dotenv()
     parser = create_parser()
     spacename = parser.parse_args()
     path = os.environ['PATH_TO_FILES']
