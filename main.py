@@ -1,15 +1,37 @@
+from random import shuffle
+from publisher import publisher
 import os
-import telegram
+from time import sleep
+from dotenv import load_dotenv
+
+
+def adress_names(path, period=True):
+    names = os.walk(path)
+    paths = []
+    for adress, dirs, files in names:
+        for names in files:
+            if period is True:
+                if '.' in names:
+                    paths.append((adress, names))
+                else:
+                    pass
+            else:
+                paths.append((adress, names))
+    return paths
 
 
 def main():
+    load_dotenv()
     token = os.environ['TG_TOKEN']
-    bot = telegram.Bot(token=token)
-    chat_id = '@channerfortest'
-    path = r'C:\Users\Денис\Projects\devman tasks\second_git_task\new_folder\apod_images'
-    image = '2016-12-11T173502JunoPerijove3Peach1024.jpg'
-    with open(f'{path}\\{image}', 'rb') as foto_1:
-        bot.send_photo(chat_id=chat_id, photo=foto_1)
+    chat_id = os.environ['CHAT_ID']
+    path = os.environ['PATH_TO_FILES']
+    sleeptime = int(os.environ['PUBLISH_TIME'])
+    fullpaths = adress_names(path)
+    while True:
+        shuffle(fullpaths)
+        for path, name in fullpaths:
+            publisher(token, chat_id, path, name)
+            sleep(sleeptime)
 
 
 if __name__ == '__main__':
