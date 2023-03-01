@@ -18,7 +18,7 @@ def apod_images(path, token, count=None, date=None, start_date=None, end_date=ge
         'api_key': token,
     }
     mod = ''
-    if hd is True:
+    if hd:
         mod = 'hd'
         path = f'{path}/apod_images/{mod}'
     else:

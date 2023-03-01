@@ -68,7 +68,7 @@ def main():
         namespace.date,
         token,
     )
-    if namespace.archive is True:
+    if namespace.archive:
         create_dates_archive(path, token)
 
 
