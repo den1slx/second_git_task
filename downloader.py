@@ -6,14 +6,14 @@ from urllib.parse import urlsplit, unquote
 
 
 def downloader(path, url, name=None, extend=None, token=None):
-    if name is None:
+    if not name:
         name = get_file_name(url)
-    if extend is None:
+    if not extend:
         extend = get_file_extend(url)
     images = Path(path)
     images.mkdir(parents=True, exist_ok=True)
     try:
-        if token is None:
+        if not token:
             response = requests.get(url)
         else:
             headers = {

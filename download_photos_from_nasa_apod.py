@@ -22,22 +22,19 @@ def download_count_apod_images(path, token, count, hd=False):
     if hd:
         mod = 'hd'
         path = f'{path}/apod_images/{mod}'
-    try:
-        response = requests.get(url, headers)
-        response.raise_for_status()
-        links = response.json()
-        for link in links:
-            url = link[f'{mod}url']
-            extend = get_file_extend(url)
-            name = get_file_name(url)
-            downloader(
-                path,
-                url,
-                name=name,
-                extend=extend,
-            )
-    except requests.exceptions.HTTPError:
-        pass
+    response = requests.get(url, headers)
+    response.raise_for_status()
+    links = response.json()
+    for link in links:
+        url = link[f'{mod}url']
+        extend = get_file_extend(url)
+        name = get_file_name(url)
+        downloader(
+            path,
+            url,
+            name=name,
+            extend=extend,
+        )
 
 
 def download_apod_image_by_date(path, token, date, hd=False):
@@ -50,20 +47,17 @@ def download_apod_image_by_date(path, token, date, hd=False):
     if hd:
         mod = 'hd'
         path = f'{path}/apod_images/{mod}'
-    try:
-        response = requests.get(url, headers)
-        response.raise_for_status()
-        today_photo = response.json()[f'{mod}url']
-        extend = get_file_extend(today_photo)
-        name = get_file_name(today_photo)
-        downloader(
-            path,
-            today_photo,
-            name=name,
-            extend=extend,
-        )
-    except requests.exceptions.HTTPError:
-        pass
+    response = requests.get(url, headers)
+    response.raise_for_status()
+    today_photo = response.json()[f'{mod}url']
+    extend = get_file_extend(today_photo)
+    name = get_file_name(today_photo)
+    downloader(
+        path,
+        today_photo,
+        name=name,
+        extend=extend,
+    )
 
 
 def download_apod_images_between_dates(path, token, start_date=None, end_date=get_current_date(), hd=False):
@@ -77,21 +71,18 @@ def download_apod_images_between_dates(path, token, start_date=None, end_date=ge
     if hd:
         mod = 'hd'
         path = f'{path}/apod_images/{mod}'
-    try:
-        response = requests.get(url, headers)
-        response.raise_for_status()
-        photos = response.json()
-        for photo in photos:
-            extend = get_file_extend(photo[f'{mod}url'])
-            name = get_file_name(photo[f'{mod}url'])
-            downloader(
-                path,
-                photo[f'{mod}url'],
-                name=f'{mod}{name}',
-                extend=extend,
-            )
-    except requests.exceptions.HTTPError:
-        pass
+    response = requests.get(url, headers)
+    response.raise_for_status()
+    photos = response.json()
+    for photo in photos:
+        extend = get_file_extend(photo[f'{mod}url'])
+        name = get_file_name(photo[f'{mod}url'])
+        downloader(
+            path,
+            photo[f'{mod}url'],
+            name=f'{mod}{name}',
+            extend=extend,
+        )
 
 
 def pick_apod_downloader(
@@ -154,15 +145,18 @@ def main():
     path = os.environ['PATH_TO_FILES']
     parser = create_parser()
     namespace = parser.parse_args()
-    pick_apod_downloader(
-        path,
-        token,
-        namespace.count,
-        namespace.date,
-        namespace.start_date,
-        namespace.end_date,
-        namespace.hd,
-    )
+    try:
+        pick_apod_downloader(
+            path,
+            token,
+            namespace.count,
+            namespace.date,
+            namespace.start_date,
+            namespace.end_date,
+            namespace.hd,
+        )
+    except requests.exceptions.HTTPError:
+        pass
 
 
 if __name__ == '__main__':

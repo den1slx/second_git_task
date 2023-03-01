@@ -12,15 +12,12 @@ def fetch_spacex_last_launch(
 ):
     url = f'https://api.spacexdata.com/v5/launches/{launch_id}'
     path = f'{path}//launch//{launch_id}'
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        links = response.json()['links']['flickr']['original']
-        for index, link in enumerate(links):
-            extend = get_file_extend(link)
-            downloader(path, link, name=f'{name}{index}', extend=extend)
-    except requests.exceptions.HTTPError:
-        pass
+    response = requests.get(url)
+    response.raise_for_status()
+    links = response.json()['links']['flickr']['original']
+    for index, link in enumerate(links):
+        extend = get_file_extend(link)
+        downloader(path, link, name=f'{name}{index}', extend=extend)
 
 
 def create_parser():
@@ -39,10 +36,13 @@ def main():
     parser = create_parser()
     spacename = parser.parse_args()
     path = os.environ['PATH_TO_FILES']
-    fetch_spacex_last_launch(
-        path,
-        spacename.id,
-    )
+    try:
+        fetch_spacex_last_launch(
+            path,
+            spacename.id,
+        )
+    except requests.exceptions.HTTPError:
+        pass
 
 
 if __name__ == '__main__':
