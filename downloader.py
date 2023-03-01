@@ -5,7 +5,7 @@ from pathlib import Path
 from urllib.parse import urlsplit, unquote
 
 
-def load_file(path, url, name=None, extension=None, token=None):
+def fetch_file(path, url, name=None, extension=None, token=None):
     images = Path(path)
     images.mkdir(parents=True, exist_ok=True)
     headers = {
@@ -75,7 +75,7 @@ def main():
         name = get_filename(namespace.url)[0]
     if not extension:
         extension = get_filename(namespace.url)[1]
-    load_file(
+    fetch_file(
         namespace.path,
         namespace.url,
         name,
