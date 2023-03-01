@@ -34,7 +34,7 @@ def get_full_way(path, period=True):
     return paths
 
 
-def publisher(token, chat_id, path, image, period=True):
+def send_image(token, chat_id, path, image, period=True):
     bot = telegram.Bot(token=token)
     if period is True:
         if '.' in image and '.txt' not in image:
@@ -54,7 +54,7 @@ def main():
     token = os.environ['TG_TOKEN']
     chat_id = os.environ['CHAT_ID']
     path = os.environ['PATH_TO_FILES']
-    publisher(token, chat_id, path, namespace.name, namespace.period)
+    send_image(token, chat_id, path, namespace.name, namespace.period)
 
 
 if __name__ == '__main__':

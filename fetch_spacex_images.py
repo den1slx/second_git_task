@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 import requests
 import argparse
-from downloader import downloader, get_file_extend
+from downloader import load_file, get_file_extend
 
 
 def fetch_spacex_last_launch(
@@ -17,7 +17,7 @@ def fetch_spacex_last_launch(
     links = response.json()['links']['flickr']['original']
     for index, link in enumerate(links):
         extend = get_file_extend(link)
-        downloader(path, link, name=f'{name}{index}', extend=extend)
+        load_file(path, link, name=f'{name}{index}', extend=extend)
 
 
 def create_parser():

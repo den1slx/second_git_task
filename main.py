@@ -1,5 +1,5 @@
 from random import shuffle
-from publisher import publisher, get_full_way
+from publisher import send_image, get_full_way
 import os
 from time import sleep
 from dotenv import load_dotenv
@@ -18,7 +18,7 @@ def main():
     while True:
         shuffle(fullpaths)
         for path, name in fullpaths:
-            publisher(token, chat_id, path, name)
+            send_image(token, chat_id, path, name)
             sleep(sleeptime)
 
 

@@ -5,7 +5,7 @@ from pathlib import Path
 from urllib.parse import urlsplit, unquote
 
 
-def downloader(path, url, name=None, extend=None, token=None):
+def load_file(path, url, name=None, extend=None, token=None):
     if not name:
         name = get_file_name(url)
     if not extend:
@@ -79,7 +79,7 @@ def create_parser():
 def main():
     parser = create_parser()
     namespace = parser.parse_args()
-    downloader(
+    load_file(
         namespace.path,
         namespace.url,
         namespace.name,

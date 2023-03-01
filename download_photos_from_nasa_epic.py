@@ -3,7 +3,7 @@ import argparse
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-from downloader import downloader, get_file_name, get_file_extend
+from downloader import load_file, get_file_name, get_file_extend
 
 
 def create_dates_archive(path, token):
@@ -17,7 +17,7 @@ def create_dates_archive(path, token):
         dates.write(text)
 
 
-def epic_images(path, date, token):
+def get_images_from_epic(path, date, token):
     url = f'https://api.nasa.gov/EPIC/api/natural/date/{date}'
     headers = {
         'api_key': token,
@@ -31,7 +31,7 @@ def epic_images(path, date, token):
         url = f'https://api.nasa.gov/EPIC/archive/natural/{date}/png/{image}.png'
         extend = get_file_extend(url)
         name = get_file_name(url)
-        downloader(
+        load_file(
             path,
             url,
             name=name,
@@ -63,7 +63,7 @@ def main():
     token = os.environ['NASA_TOKEN']
     parser = create_parser()
     namespace = parser.parse_args()
-    epic_images(
+    get_images_from_epic(
         f'{path}/epic/{namespace.date}',
         namespace.date,
         token,
