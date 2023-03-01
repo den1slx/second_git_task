@@ -10,10 +10,7 @@ def main():
     token = os.environ['TG_TOKEN']
     chat_id = os.environ['TG_CHAT_ID']
     path = os.environ['PATH_TO_FILES']
-    try:
-        sleeptime = int(os.environ['PUBLISH_TIME'])
-    except KeyError:
-        sleeptime = 14400
+    sleeptime = int(os.getenv('PUBLISH_TIME', default='14400'))
     fullpaths = get_full_way(path)
     while True:
         shuffle(fullpaths)
