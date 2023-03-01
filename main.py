@@ -1,5 +1,5 @@
 from random import shuffle
-from publisher import publisher, adress_names
+from publisher import publisher, get_full_way
 import os
 from time import sleep
 from dotenv import load_dotenv
@@ -14,7 +14,7 @@ def main():
         sleeptime = int(os.environ['PUBLISH_TIME'])
     except KeyError:
         sleeptime = 14400
-    fullpaths = adress_names(path)
+    fullpaths = get_full_way(path)
     while True:
         shuffle(fullpaths)
         for path, name in fullpaths:
