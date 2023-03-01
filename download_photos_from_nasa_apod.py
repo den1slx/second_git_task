@@ -6,13 +6,13 @@ from dotenv import load_dotenv
 from downloader import downloader, get_file_name, get_file_extend
 
 
-def is_today():
+def get_current_date():
     today = datetime.date.today()
     today.strftime('%Y-%m-%d')
     return today
 
 
-def apod_images(path, token, count=None, date=None, start_date=None, end_date=is_today(), hd=False):
+def apod_images(path, token, count=None, date=None, start_date=None, end_date=get_current_date(), hd=False):
     url = 'https://api.nasa.gov/planetary/apod'
     headers = {
         'api_key': token,
@@ -98,7 +98,7 @@ def create_parser():
         '-ed',
         '--end_date',
         help='end_date used with start_date. default end_date=today',
-        default=is_today(),
+        default=get_current_date(),
     )
     parser.add_argument(
         '--hd',
