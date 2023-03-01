@@ -20,12 +20,16 @@ def load_file(path, url, name=None, extension=None, token=None):
         with open(f'{path}/{name}{extension}', 'wb') as picture:
             picture.write(response.content)
     except requests.exceptions.HTTPError:
-        try:
-            with open(f'{path}/bad_links.txt', 'x') as txt:
-                txt.write(f'{url}\n')
-        except FileExistsError:
-            with open(f'{path}/bad_links.txt', 'a') as txt:
-                txt.write(f'{url}\n')
+        create_bad_links_log(path, url)
+
+
+def create_bad_links_log(path, url):
+    try:
+        with open(f'{path}/bad_links.txt', 'x') as txt:
+            txt.write(f'{url}\n')
+    except FileExistsError:
+        with open(f'{path}/bad_links.txt', 'a') as txt:
+            txt.write(f'{url}\n')
 
 
 def get_filename(url):
