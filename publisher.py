@@ -52,7 +52,7 @@ def main():
     parser = create_parser()
     namespace = parser.parse_args()
     token = os.environ['TG_TOKEN']
-    chat_id = os.environ['CHAT_ID']
+    chat_id = os.environ['TG_CHAT_ID']
     path = os.environ['PATH_TO_FILES']
     send_image(token, chat_id, path, namespace.name, namespace.period)
 

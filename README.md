@@ -8,7 +8,7 @@
   * NASA_TOKEN='ваш токен'  
   * PATH_TO_FILES='абсолютный путь к создаваемой директории'  
   * PUBLISH_TIME='количество секунд между публикациями'  
-  * CHAT_ID='id чата в Telegram'   
+  * TG_CHAT_ID='id чата в Telegram'   
 
 
 Токен должен быть получен из окружения. (.env файл должен содержать переменную NASA_TOKEN='ваштокен')  
@@ -24,12 +24,12 @@ pip install -r requirements.txt
 
 Публикует в телеграм картинки по одной через каждые PUBLISH_TIME секунд, из списка файлов в директории PATH_TO_FILES и вложенных директорий.
 
-Использует TG_TOKEN, CHAT_ID, PATH_TO_FILES, PUBLISH_TIME.
+Использует TG_TOKEN, TG_CHAT_ID, PATH_TO_FILES, PUBLISH_TIME.
 Не принимает аргументы.
 
 ### Использование
 
-Укажите значения TG_TOKEN, CHAT_ID, PATH_TO_FILES, PUBLISH_TIME
+Укажите значения TG_TOKEN, TG_CHAT_ID, PATH_TO_FILES, PUBLISH_TIME
 нужные вам и запустите скрипт.
 
 ```
@@ -113,8 +113,7 @@ response.json()['links']['flickr']['original']
 ## downloader
 
 содержит функции:
-* *get_file_extend*
-* *get_file_name*
+* *get_filename*
 * *downloader*
 
 Используется как колбэк в 
@@ -124,14 +123,14 @@ response.json()['links']['flickr']['original']
 
 ## publisher
 
-Использует TG_TOKEN, CHAT_ID, PATH_TO_FILES.
-Здесь PATH_TO_FILES - абсолютный путь к вашакартинка.jpg.
+Использует TG_TOKEN, TG_CHAT_ID, PATH_TO_FILES.
+Здесь PATH_TO_FILES - абсолютный путь к вашакартинка.формат
 
 ### Использование
 
 Ваш бот публикует картинку в телеграм.
 ```
-python publisher.py вашакартинка.jpg
+python publisher.py вашакартинка.формат
 ```
 
 ### Цель проекта

@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 def main():
     load_dotenv()
     token = os.environ['TG_TOKEN']
-    chat_id = os.environ['CHAT_ID']
+    chat_id = os.environ['TG_CHAT_ID']
     path = os.environ['PATH_TO_FILES']
     try:
         sleeptime = int(os.environ['PUBLISH_TIME'])
