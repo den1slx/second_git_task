@@ -7,9 +7,7 @@ from downloader import load_file, get_filename
 
 
 def create_dates_archive(path, token):
-    params = {
-        'api_key': token,
-    }
+    params = {'api_key': token}
     response = requests.get(
         f'https://api.nasa.gov/EPIC/api/natural/all',
         params=params,

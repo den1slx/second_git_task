@@ -8,13 +8,13 @@ from urllib.parse import urlsplit, unquote
 def load_file(path, url, name=None, extension=None, token=None):
     images = Path(path)
     images.mkdir(parents=True, exist_ok=True)
+    headers = {
+        'api_key': token,
+    }
     try:
         if not token:
             response = requests.get(url)
         else:
-            headers = {
-                'api_key': token,
-            }
             response = requests.get(url, headers)
         response.raise_for_status()
         with open(f'{path}/{name}{extension}', 'wb') as picture:
