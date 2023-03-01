@@ -5,11 +5,11 @@ from pathlib import Path
 from urllib.parse import urlsplit, unquote
 
 
-def load_file(path, url, name=None, extend=None, token=None):
+def load_file(path, url, name=None, extension=None, token=None):
     if not name:
         name = get_file_name(url)
-    if not extend:
-        extend = get_file_extend(url)
+    if not extension:
+        extension = get_file_extension(url)
     images = Path(path)
     images.mkdir(parents=True, exist_ok=True)
     try:
@@ -21,7 +21,7 @@ def load_file(path, url, name=None, extend=None, token=None):
             }
             response = requests.get(url, headers)
         response.raise_for_status()
-        with open(f'{path}/{name}{extend}', 'wb') as picture:
+        with open(f'{path}/{name}{extension}', 'wb') as picture:
             picture.write(response.content)
     except requests.exceptions.HTTPError:
         try:
@@ -32,13 +32,13 @@ def load_file(path, url, name=None, extend=None, token=None):
                 txt.write(f'{url}\n')
 
 
-def get_file_extend(url):
+def get_file_extension(url):
     url_split = urlsplit(url)
     path = url_split.path
     path = unquote(path)
     tail = os.path.split(path)[1]
-    extend = os.path.splitext(tail)[1]
-    return extend
+    extension = os.path.splitext(tail)[1]
+    return extension
 
 
 def get_file_name(url):
@@ -65,8 +65,8 @@ def create_parser():
         help='Name downloading file',
     )
     parser.add_argument(
-        'extend',
-        help='extend downloading file',
+        'extension',
+        help='extension downloading file',
     )
     parser.add_argument(
         '-t',
@@ -83,7 +83,7 @@ def main():
         namespace.path,
         namespace.url,
         namespace.name,
-        namespace.extend,
+        namespace.extension,
         namespace.token,
     )
 

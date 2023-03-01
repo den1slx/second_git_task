@@ -13,7 +13,7 @@ def create_parser():
     parser.add_argument(
         '-p',
         '--period',
-        help='If not indicated: ignore files without period in name, where name is file_name+file_extend.',
+        help='If not indicated: ignore files without period in name, where name is file_name+file_extension.',
         action='store_true',
     )
     return parser

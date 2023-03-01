@@ -3,7 +3,7 @@ import argparse
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-from downloader import load_file, get_file_name, get_file_extend
+from downloader import load_file, get_file_name, get_file_extension
 
 
 def create_dates_archive(path, token):
@@ -29,13 +29,13 @@ def get_images_from_epic(path, date, token):
         date = link['date'].split()[0]
         date = date.replace('-', '/')
         url = f'https://api.nasa.gov/EPIC/archive/natural/{date}/png/{image}.png'
-        extend = get_file_extend(url)
+        extension = get_file_extension(url)
         name = get_file_name(url)
         load_file(
             path,
             url,
             name=name,
-            extend=extend,
+            extension=extension,
             token=token,
         )
 
