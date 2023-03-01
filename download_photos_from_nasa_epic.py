@@ -66,13 +66,16 @@ def main():
     token = os.environ['NASA_TOKEN']
     parser = create_parser()
     namespace = parser.parse_args()
-    get_images_from_epic(
-        f'{path}/epic/{namespace.date}',
-        namespace.date,
-        token,
-    )
-    if namespace.archive:
-        create_dates_archive(path, token)
+    try:
+        get_images_from_epic(
+            f'{path}/epic/{namespace.date}',
+            namespace.date,
+            token,
+        )
+        if namespace.archive:
+            create_dates_archive(path, token)
+    except requests.exceptions.HTTPError:
+        pass
 
 
 if __name__ == '__main__':
