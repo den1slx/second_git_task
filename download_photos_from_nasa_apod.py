@@ -28,8 +28,8 @@ def apod_images(path, token, count=None, date=None, start_date=None, end_date=ge
             headers['count'] = count
             response = requests.get(url, headers)
             response.raise_for_status()
-            links_list = response.json()
-            for link in links_list:
+            links = response.json()
+            for link in links:
                 url = link[f'{mod}url']
                 extend = get_file_extend(url)
                 name = get_file_name(url)
