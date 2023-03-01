@@ -12,63 +12,103 @@ def get_current_date():
     return today
 
 
-def apod_images(path, token, count=None, date=None, start_date=None, end_date=get_current_date(), hd=False):
+def download_count_apod_images(path, token, count, hd=False):
     url = 'https://api.nasa.gov/planetary/apod'
     headers = {
         'api_key': token,
+        'count': count,
     }
     mod = ''
     if hd:
         mod = 'hd'
         path = f'{path}/apod_images/{mod}'
-    else:
-        path = f'{path}/apod_images'
     try:
-        if count is not None:
-            headers['count'] = count
-            response = requests.get(url, headers)
-            response.raise_for_status()
-            links = response.json()
-            for link in links:
-                url = link[f'{mod}url']
-                extend = get_file_extend(url)
-                name = get_file_name(url)
-                downloader(
-                    path,
-                    url,
-                    name=name,
-                    extend=extend,
-                )
-        elif date is not None:
-            headers['date'] = date
-            response = requests.get(url, headers)
-            response.raise_for_status()
-            today_photo = response.json()[f'{mod}url']
-            extend = get_file_extend(today_photo)
-            name = get_file_name(today_photo)
+        response = requests.get(url, headers)
+        response.raise_for_status()
+        links = response.json()
+        for link in links:
+            url = link[f'{mod}url']
+            extend = get_file_extend(url)
+            name = get_file_name(url)
             downloader(
                 path,
-                today_photo,
+                url,
                 name=name,
                 extend=extend,
             )
-        elif start_date is not None:
-            headers['start_date'] = start_date
-            headers['end_date'] = end_date
-            response = requests.get(url, headers)
-            response.raise_for_status()
-            photos = response.json()
-            for photo in photos:
-                extend = get_file_extend(photo[f'{mod}url'])
-                name = get_file_name(photo[f'{mod}url'])
-                downloader(
-                    path,
-                    photo[f'{mod}url'],
-                    name=f'{mod}{name}',
-                    extend=extend,
-                )
     except requests.exceptions.HTTPError:
         pass
+
+
+def download_apod_image_by_date(path, token, date, hd=False):
+    url = 'https://api.nasa.gov/planetary/apod'
+    headers = {
+        'api_key': token,
+        'date': date,
+    }
+    mod = ''
+    if hd:
+        mod = 'hd'
+        path = f'{path}/apod_images/{mod}'
+    try:
+        response = requests.get(url, headers)
+        response.raise_for_status()
+        today_photo = response.json()[f'{mod}url']
+        extend = get_file_extend(today_photo)
+        name = get_file_name(today_photo)
+        downloader(
+            path,
+            today_photo,
+            name=name,
+            extend=extend,
+        )
+    except requests.exceptions.HTTPError:
+        pass
+
+
+def download_apod_images_between_dates(path, token, start_date=None, end_date=get_current_date(), hd=False):
+    url = 'https://api.nasa.gov/planetary/apod'
+    headers = {
+        'api_key': token,
+        'start_date': start_date,
+        'end_date': end_date,
+    }
+    mod = ''
+    if hd:
+        mod = 'hd'
+        path = f'{path}/apod_images/{mod}'
+    try:
+        response = requests.get(url, headers)
+        response.raise_for_status()
+        photos = response.json()
+        for photo in photos:
+            extend = get_file_extend(photo[f'{mod}url'])
+            name = get_file_name(photo[f'{mod}url'])
+            downloader(
+                path,
+                photo[f'{mod}url'],
+                name=f'{mod}{name}',
+                extend=extend,
+            )
+    except requests.exceptions.HTTPError:
+        pass
+
+
+def pick_apod_downloader(
+        path,
+        token,
+        count=None,
+        date=None,
+        start_date=None,
+        end_date=get_current_date(),
+        hd=False,
+):
+    if count:
+        download_count_apod_images(path, token, count, hd=hd)
+    elif date:
+        download_apod_image_by_date(path, token, date, hd=hd)
+    elif start_date:
+        download_apod_images_between_dates(path, token, start_date=start_date, end_date=end_date, hd=hd)
 
 
 def create_parser():
@@ -114,7 +154,7 @@ def main():
     path = os.environ['PATH_TO_FILES']
     parser = create_parser()
     namespace = parser.parse_args()
-    apod_images(
+    pick_apod_downloader(
         path,
         token,
         namespace.count,
