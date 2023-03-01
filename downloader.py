@@ -6,10 +6,6 @@ from urllib.parse import urlsplit, unquote
 
 
 def load_file(path, url, name=None, extension=None, token=None):
-    if not name:
-        name = get_filename(url)[0]
-    if not extension:
-        extension = get_filename(url)[1]
     images = Path(path)
     images.mkdir(parents=True, exist_ok=True)
     try:
@@ -70,11 +66,16 @@ def create_parser():
 def main():
     parser = create_parser()
     namespace = parser.parse_args()
+    name, extension = namespace.name, namespace.extension
+    if not name:
+        name = get_filename(namespace.url)[0]
+    if not extension:
+        extension = get_filename(namespace.url)[1]
     load_file(
         namespace.path,
         namespace.url,
-        namespace.name,
-        namespace.extension,
+        name,
+        extension,
         namespace.token,
     )
 
