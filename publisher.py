@@ -24,11 +24,8 @@ def get_full_way(path, period=True):
     paths = []
     for adress, dirs, files in names:
         for names in files:
-            if period is True:
-                if '.' in names:
+            if period is True and '.' in names:
                     paths.append((adress, names))
-                else:
-                    pass
             else:
                 paths.append((adress, names))
     return paths
@@ -40,8 +37,6 @@ def send_image(token, chat_id, path, image, period=True):
         if '.' in image and '.txt' not in image:
             with open(f'{path}\\{image}', 'rb') as foto:
                 bot.send_photo(chat_id=chat_id, photo=foto)
-        else:
-            pass
     else:
         with open(f'{path}\\{image}', 'rb') as foto:
             bot.send_photo(chat_id=chat_id, photo=foto)
