@@ -7,9 +7,9 @@ from urllib.parse import urlsplit, unquote
 
 def load_file(path, url, name=None, extension=None, token=None):
     if not name:
-        name = get_file_name(url)
+        name = get_filename(url)[0]
     if not extension:
-        extension = get_file_extension(url)
+        extension = get_filename(url)[1]
     images = Path(path)
     images.mkdir(parents=True, exist_ok=True)
     try:
@@ -32,22 +32,13 @@ def load_file(path, url, name=None, extension=None, token=None):
                 txt.write(f'{url}\n')
 
 
-def get_file_extension(url):
+def get_filename(url):
     url_split = urlsplit(url)
     path = url_split.path
     path = unquote(path)
     tail = os.path.split(path)[1]
-    extension = os.path.splitext(tail)[1]
-    return extension
-
-
-def get_file_name(url):
-    url_split = urlsplit(url)
-    path = url_split.path
-    path = unquote(path)
-    tail = os.path.split(path)[1]
-    name = os.path.splitext(tail)[0]
-    return name
+    name, extension = os.path.splitext(tail)
+    return name, extension
 
 
 def create_parser():

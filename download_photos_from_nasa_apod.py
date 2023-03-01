@@ -3,7 +3,7 @@ import requests
 import argparse
 import datetime
 from dotenv import load_dotenv
-from downloader import load_file, get_file_name, get_file_extension
+from downloader import load_file, get_filename
 
 
 def get_current_date():
@@ -27,8 +27,7 @@ def get_images_at_quantity_from_apod(path, token, count, hd=False):
     links = response.json()
     for link in links:
         url = link[f'{mod}url']
-        extension = get_file_extension(url)
-        name = get_file_name(url)
+        name, extension = get_filename(url)
         load_file(
             path,
             url,
@@ -50,8 +49,7 @@ def get_image_from_apod_by_date(path, token, date, hd=False):
     response = requests.get(url, headers)
     response.raise_for_status()
     today_photo = response.json()[f'{mod}url']
-    extension = get_file_extension(today_photo)
-    name = get_file_name(today_photo)
+    name, extension = get_filename(today_photo)
     load_file(
         path,
         today_photo,
@@ -75,8 +73,7 @@ def get_images_from_apod_from_date_to_date(path, token, start_date=None, end_dat
     response.raise_for_status()
     photos = response.json()
     for photo in photos:
-        extension = get_file_extension(photo[f'{mod}url'])
-        name = get_file_name(photo[f'{mod}url'])
+        name, extension = get_filename(photo[f'{mod}url'])
         load_file(
             path,
             photo[f'{mod}url'],
