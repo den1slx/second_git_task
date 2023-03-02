@@ -19,12 +19,12 @@ def create_parser():
     return parser
 
 
-def get_full_way(path, period=True):
+def get_full_way(path, boolean=True):
     names = os.walk(path)
     paths = []
     for adress, dirs, files in names:
         for names in files:
-            if period is True and '.' in names:
+            if boolean and '.' in names:
                 paths.append((adress, names))
             else:
                 paths.append((adress, names))
