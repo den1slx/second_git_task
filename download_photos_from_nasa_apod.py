@@ -19,10 +19,8 @@ def get_images_at_quantity_from_apod(path, token, count, hd=False):
         'api_key': token,
         'count': count,
     }
-    mod = ''
-    if hd:
-        mod = 'hd'
-        path = f'{path}/apod_images/{mod}'
+    mod = get_hd_mod(hd)
+    path = f'{path}/apod_images/{mod}'
     response = requests.get(url, headers)
     response.raise_for_status()
     links = response.json()
@@ -43,10 +41,8 @@ def get_image_from_apod_by_date(path, token, date, hd=False):
         'api_key': token,
         'date': date,
     }
-    mod = ''
-    if hd:
-        mod = 'hd'
-        path = f'{path}/apod_images/{mod}'
+    mod = get_hd_mod(hd)
+    path = f'{path}/apod_images/{mod}'
     response = requests.get(url, headers)
     response.raise_for_status()
     today_photo = response.json()[f'{mod}url']
@@ -66,10 +62,8 @@ def get_images_from_apod_from_date_to_date(path, token, start_date=None, end_dat
         'start_date': start_date,
         'end_date': end_date,
     }
-    mod = ''
-    if hd:
-        mod = 'hd'
-        path = f'{path}/apod_images/{mod}'
+    mod = get_hd_mod(hd)
+    path = f'{path}/apod_images/{mod}'
     response = requests.get(url, headers)
     response.raise_for_status()
     photos = response.json()
@@ -81,6 +75,13 @@ def get_images_from_apod_from_date_to_date(path, token, start_date=None, end_dat
             name=f'{mod}{name}',
             extension=extension,
         )
+
+
+def get_hd_mod(hd):
+    mod = ''
+    if hd:
+        mod = 'hd'
+    return mod
 
 
 def create_parser():
