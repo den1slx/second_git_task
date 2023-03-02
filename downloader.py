@@ -23,7 +23,7 @@ def create_bad_links_log(path, url):
         txt.write(f'{url}\n')
 
 
-def get_filename(url):
+def get_name_and_extension_file(url):
     url_split = urlsplit(url)
     path = url_split.path
     path = unquote(path)
@@ -63,9 +63,9 @@ def main():
     namespace = parser.parse_args()
     name, extension = namespace.name, namespace.extension
     if not name:
-        name = get_filename(namespace.url)[0]
+        name = get_name_and_extension_file(namespace.url)[0]
     if not extension:
-        extension = get_filename(namespace.url)[1]
+        extension = get_name_and_extension_file(namespace.url)[1]
     try:
         fetch_file(
             namespace.path,

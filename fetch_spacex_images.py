@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 import requests
 import argparse
-from downloader import fetch_file, get_filename
+from downloader import fetch_file, get_name_and_extension_file
 from contextlib import suppress
 
 
@@ -17,7 +17,7 @@ def fetch_spacex_last_launch(
     response.raise_for_status()
     links = response.json()['links']['flickr']['original']
     for index, link in enumerate(links):
-        extension = get_filename(link)[1]
+        extension = get_name_and_extension_file(link)[1]
         fetch_file(path, link, name=f'{name}{index}', extension=extension)
 
 
