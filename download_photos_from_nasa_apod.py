@@ -83,23 +83,6 @@ def get_images_from_apod_from_date_to_date(path, token, start_date=None, end_dat
         )
 
 
-def pick_by_args(
-        path,
-        token,
-        count=None,
-        date=None,
-        start_date=None,
-        end_date=get_current_date(),
-        hd=False,
-):
-    if count:
-        get_images_at_quantity_from_apod(path, token, count, hd=hd)
-    elif date:
-        get_image_from_apod_by_date(path, token, date, hd=hd)
-    elif start_date:
-        get_images_from_apod_from_date_to_date(path, token, start_date=start_date, end_date=end_date, hd=hd)
-
-
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -143,16 +126,15 @@ def main():
     path = os.environ['PATH_TO_FILES']
     parser = create_parser()
     namespace = parser.parse_args()
+    count, hd = namespace.count, namespace.hd
+    date, start_date, end_date = namespace.date, namespace.start_date, namespace.end_date
     with suppress(requests.exceptions.HTTPError):
-        pick_by_args(
-            path,
-            token,
-            namespace.count,
-            namespace.date,
-            namespace.start_date,
-            namespace.end_date,
-            namespace.hd,
-        )
+        if count:
+            get_images_at_quantity_from_apod(path, token, count, hd=hd)
+        elif date:
+            get_image_from_apod_by_date(path, token, date, hd=hd)
+        elif start_date:
+            get_images_from_apod_from_date_to_date(path, token, start_date=start_date, end_date=end_date, hd=hd)
 
 
 if __name__ == '__main__':
