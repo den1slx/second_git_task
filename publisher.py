@@ -32,10 +32,10 @@ def get_full_ways(path, boolean=True):
     return paths
 
 
-def send_image(token, chat_id, path, image, boolean=True):
+def send_image(token, chat_id, path, image_name_extension, boolean=True):
     bot = telegram.Bot(token=token)
-    fullpath = PurePath(path).joinpath(image)
-    if boolean and '.' in image and '.txt' not in image:
+    fullpath = PurePath(path).joinpath(image_name_extension)
+    if boolean and '.' in image_name_extension and '.txt' not in image_name_extension:
         with open(fullpath, 'rb') as foto:
             bot.send_photo(chat_id=chat_id, photo=foto)
     else:
