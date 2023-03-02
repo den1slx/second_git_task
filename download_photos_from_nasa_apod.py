@@ -115,9 +115,9 @@ def main():
     )
     with suppress(requests.exceptions.HTTPError):
         if date:
-            get_image_at_date_from_apod(path, headers, url, boolean_hd=hd)
+            get_image_at_date_from_apod(path, headers, url, hd)
         else:
-            get_images_from_apod(headers, url, boolean_hd=hd)
+            get_images_from_apod(path, headers, url, hd)
 
 
 if __name__ == '__main__':
