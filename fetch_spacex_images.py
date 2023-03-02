@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 import requests
 import argparse
+from pathlib import PurePath
 from downloader import fetch_file, get_name_and_extension_file
 from contextlib import suppress
 
@@ -12,7 +13,7 @@ def fetch_spacex_last_launch(
     name='SpaceX_',
 ):
     url = f'https://api.spacexdata.com/v5/launches/{launch_id}'
-    path = f'{path}//launch//{launch_id}'
+    path = PurePath(path).joinpath('launch').joinpath(launch_id)
     response = requests.get(url)
     response.raise_for_status()
     links = response.json()['links']['flickr']['original']

@@ -2,7 +2,7 @@ import requests
 import argparse
 import os
 from contextlib import suppress
-from pathlib import Path
+from pathlib import Path, PurePath
 from dotenv import load_dotenv
 from downloader import fetch_file, get_name_and_extension_file
 
@@ -66,8 +66,9 @@ def main():
     parser = create_parser()
     namespace = parser.parse_args()
     with suppress(requests.exceptions.HTTPError):
+        fullpath = PurePath(path).joinpath('epic').joinpath(namespace.date)
         get_images_from_epic(
-            f'{path}/epic/{namespace.date}',
+            fullpath,
             namespace.date,
             token,
         )

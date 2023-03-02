@@ -2,6 +2,7 @@ import os
 import telegram
 from dotenv import load_dotenv
 import argparse
+from pathlib import PurePath
 
 
 def create_parser():
@@ -31,14 +32,14 @@ def get_full_ways(path, boolean=True):
     return paths
 
 
-def send_image(token, chat_id, path, image, period=True):
+def send_image(token, chat_id, path, image, boolean=True):
     bot = telegram.Bot(token=token)
-    if period is True:
-        if '.' in image and '.txt' not in image:
-            with open(f'{path}\\{image}', 'rb') as foto:
-                bot.send_photo(chat_id=chat_id, photo=foto)
+    fullpath = PurePath(path).joinpath(image)
+    if boolean and '.' in image and '.txt' not in image:
+        with open(fullpath, 'rb') as foto:
+            bot.send_photo(chat_id=chat_id, photo=foto)
     else:
-        with open(f'{path}\\{image}', 'rb') as foto:
+        with open(fullpath, 'rb') as foto:
             bot.send_photo(chat_id=chat_id, photo=foto)
 
 

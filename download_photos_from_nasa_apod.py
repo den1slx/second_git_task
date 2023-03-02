@@ -3,6 +3,7 @@ import requests
 import argparse
 import datetime
 from contextlib import suppress
+from pathlib import PurePath
 from dotenv import load_dotenv
 from downloader import fetch_file, get_name_and_extension_file
 
@@ -20,7 +21,7 @@ def get_images_at_quantity_from_apod(path, token, count, hd=False):
         'count': count,
     }
     mod = get_hd_mod(hd)
-    path = f'{path}/apod_images/{mod}'
+    path = PurePath(path).joinpath('apod_images').joinpath(mod)
     response = requests.get(url, headers)
     response.raise_for_status()
     links = response.json()
@@ -42,7 +43,7 @@ def get_image_from_apod_by_date(path, token, date, hd=False):
         'date': date,
     }
     mod = get_hd_mod(hd)
-    path = f'{path}/apod_images/{mod}'
+    path = PurePath(path).joinpath('apod_images').joinpath(mod)
     response = requests.get(url, headers)
     response.raise_for_status()
     today_photo = response.json()[f'{mod}url']
@@ -63,7 +64,7 @@ def get_images_from_apod_from_date_to_date(path, token, start_date=None, end_dat
         'end_date': end_date,
     }
     mod = get_hd_mod(hd)
-    path = f'{path}/apod_images/{mod}'
+    path = PurePath(path).joinpath('apod_images').joinpath(mod)
     response = requests.get(url, headers)
     response.raise_for_status()
     photos = response.json()
