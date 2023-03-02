@@ -28,12 +28,12 @@ def create_parser():
     return parser
 
 
-def get_full_ways(path, exceptions=('.',)):
+def get_full_ways(path, requirements=('.',), exceptions=''):
     names = os.walk(path)
     paths = []
     for adress, dirs, files in names:
         for names in files:
-            if is_available_name(names, exceptions):
+            if is_available_name(names, requirements=requirements, exceptions=exceptions):
                 paths.append((adress, names))
     return paths
 
