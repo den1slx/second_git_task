@@ -2,6 +2,7 @@ import os
 import requests
 import argparse
 import datetime
+from contextlib import suppress
 from dotenv import load_dotenv
 from downloader import fetch_file, get_filename
 
@@ -142,7 +143,7 @@ def main():
     path = os.environ['PATH_TO_FILES']
     parser = create_parser()
     namespace = parser.parse_args()
-    try:
+    with suppress(requests.exceptions.HTTPError):
         pick_by_args(
             path,
             token,
@@ -152,8 +153,6 @@ def main():
             namespace.end_date,
             namespace.hd,
         )
-    except requests.exceptions.HTTPError:
-        pass
 
 
 if __name__ == '__main__':

@@ -1,6 +1,7 @@
 import requests
 import argparse
 import os
+from contextlib import suppress
 from pathlib import Path
 from dotenv import load_dotenv
 from downloader import fetch_file, get_filename
@@ -64,7 +65,7 @@ def main():
     token = os.environ['NASA_TOKEN']
     parser = create_parser()
     namespace = parser.parse_args()
-    try:
+    with suppress(requests.exceptions.HTTPError):
         get_images_from_epic(
             f'{path}/epic/{namespace.date}',
             namespace.date,
@@ -72,8 +73,6 @@ def main():
         )
         if namespace.archive:
             create_dates_archive(path, token)
-    except requests.exceptions.HTTPError:
-        pass
 
 
 if __name__ == '__main__':

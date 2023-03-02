@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import requests
 import argparse
 from downloader import fetch_file, get_filename
+from contextlib import suppress
 
 
 def fetch_spacex_last_launch(
@@ -36,13 +37,11 @@ def main():
     parser = create_parser()
     spacename = parser.parse_args()
     path = os.environ['PATH_TO_FILES']
-    try:
+    with suppress(requests.exceptions.HTTPError):
         fetch_spacex_last_launch(
             path,
             spacename.id,
         )
-    except requests.exceptions.HTTPError:
-        pass
 
 
 if __name__ == '__main__':
