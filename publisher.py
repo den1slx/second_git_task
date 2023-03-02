@@ -19,7 +19,7 @@ def create_parser():
     return parser
 
 
-def get_full_way(path, boolean=True):
+def get_full_ways(path, boolean=True):
     names = os.walk(path)
     paths = []
     for adress, dirs, files in names:
