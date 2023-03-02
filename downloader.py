@@ -17,7 +17,6 @@ def fetch_file(path, url, name=None, extension=None, token=None):
         picture.write(response.content)
 
 
-
 def create_bad_links_log(path, url):
     with open(f'{path}/bad_links.txt', 'a') as txt:
         txt.write(f'{url}\n')
@@ -27,7 +26,7 @@ def get_name_and_extension_file(url):
     url_split = urlsplit(url)
     path = url_split.path
     path = unquote(path)
-    tail = os.path.split(path)[1]
+    head, tail = os.path.split(path)
     name, extension = os.path.splitext(tail)
     return name, extension
 
@@ -62,10 +61,11 @@ def main():
     parser = create_parser()
     namespace = parser.parse_args()
     name, extension = namespace.name, namespace.extension
+    default_name, default_extension = get_name_and_extension_file(namespace.url)
     if not name:
-        name = get_name_and_extension_file(namespace.url)[0]
+        name = default_name
     if not extension:
-        extension = get_name_and_extension_file(namespace.url)[1]
+        extension = default_extension
     try:
         fetch_file(
             namespace.path,

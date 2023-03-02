@@ -17,7 +17,7 @@ def fetch_spacex_last_launch(
     response.raise_for_status()
     links = response.json()['links']['flickr']['original']
     for index, link in enumerate(links):
-        extension = get_name_and_extension_file(link)[1]
+        unused_name, extension = get_name_and_extension_file(link)
         fetch_file(path, link, name=f'{name}{index}', extension=extension)
 
 

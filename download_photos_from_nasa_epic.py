@@ -29,7 +29,7 @@ def get_images_from_epic(path, date, token):
     links = response.json()
     for link in links:
         image = link['image']
-        date = link['date'].split()[0]
+        date, *unused = link['date'].split()
         date = date.replace('-', '/')
         url = f'https://api.nasa.gov/EPIC/archive/natural/{date}/png/{image}.png'
         name, extension = get_name_and_extension_file(url)
