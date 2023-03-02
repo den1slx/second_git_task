@@ -104,7 +104,7 @@ def main():
     namespace = parser.parse_args()
     count, hd = namespace.count, namespace.hd
     date, start_date, end_date = namespace.date, namespace.start_date, namespace.end_date
-    if start_date:
+    if start_date and not end_date:
         end_date = get_current_date()
     headers = get_headers(
         api_key=token,
