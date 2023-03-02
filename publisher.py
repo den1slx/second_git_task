@@ -25,7 +25,7 @@ def get_full_way(path, period=True):
     for adress, dirs, files in names:
         for names in files:
             if period is True and '.' in names:
-                    paths.append((adress, names))
+                paths.append((adress, names))
             else:
                 paths.append((adress, names))
     return paths
