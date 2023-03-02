@@ -11,13 +11,11 @@ def fetch_file(path, url, name=None, extension=None, token=None):
     headers = {
         'api_key': token,
     }
-    try:
-        response = requests.get(url, headers)
-        response.raise_for_status()
-        with open(f'{path}/{name}{extension}', 'wb') as picture:
-            picture.write(response.content)
-    except requests.exceptions.HTTPError:
-        create_bad_links_log(path, url)
+    response = requests.get(url, headers)
+    response.raise_for_status()
+    with open(f'{path}/{name}{extension}', 'wb') as picture:
+        picture.write(response.content)
+
 
 
 def create_bad_links_log(path, url):
@@ -68,13 +66,16 @@ def main():
         name = get_filename(namespace.url)[0]
     if not extension:
         extension = get_filename(namespace.url)[1]
-    fetch_file(
-        namespace.path,
-        namespace.url,
-        name,
-        extension,
-        namespace.token,
-    )
+    try:
+        fetch_file(
+            namespace.path,
+            namespace.url,
+            name,
+            extension,
+            namespace.token,
+        )
+    except requests.exceptions.HTTPError:
+        create_bad_links_log(namespace.path, namespace.url)
 
 
 if __name__ == '__main__':
