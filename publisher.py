@@ -12,33 +12,49 @@ def create_parser():
         help='file name',
     )
     parser.add_argument(
-        '-p',
-        '--period',
-        help='If not indicated: ignore files without period in name, where name is file_name+file_extension.',
-        action='store_true',
+        '-e',
+        '--exceptions',
+        help='''It should not be in name. default=('.txt',)''',
+        type=tuple,
+        default=('.txt',),
+    ),
+    parser.add_argument(
+        '-r',
+        '--requirements',
+        help='''It should be in name. default=('.',)''',
+        type=tuple,
+        default=('.',),
     )
     return parser
 
 
-def get_full_ways(path, boolean=True):
+def get_full_ways(path, exceptions=('.',)):
     names = os.walk(path)
     paths = []
     for adress, dirs, files in names:
         for names in files:
-            if boolean and '.' in names:
-                paths.append((adress, names))
-            else:
+            if is_available_name(names, exceptions):
                 paths.append((adress, names))
     return paths
 
 
-def send_image(token, chat_id, path, image_name_extension, boolean=True):
+def is_available_name(name, exceptions='', requirements=''):
+    boolean = True
+    for exception in exceptions:
+        if str(exception) in name:
+            boolean = False
+            break
+    for requirement in requirements:
+        if str(requirement) not in name:
+            boolean = False
+            break
+    return boolean
+
+
+def send_image(token, chat_id, path, image_name_extension, exceptions=('.txt',), requirements='.'):
     bot = telegram.Bot(token=token)
     fullpath = PurePath(path).joinpath(image_name_extension)
-    if boolean and '.' in image_name_extension and '.txt' not in image_name_extension:
-        with open(fullpath, 'rb') as foto:
-            bot.send_photo(chat_id=chat_id, photo=foto)
-    else:
+    if is_available_name(image_name_extension, exceptions=exceptions, requirements=requirements):
         with open(fullpath, 'rb') as foto:
             bot.send_photo(chat_id=chat_id, photo=foto)
 
@@ -50,7 +66,14 @@ def main():
     token = os.environ['TG_TOKEN']
     chat_id = os.environ['TG_CHAT_ID']
     path = os.environ['PATH_TO_FILES']
-    send_image(token, chat_id, path, namespace.name, namespace.period)
+    send_image(
+        token,
+        chat_id,
+        path,
+        namespace.name,
+        exceptions=namespace.exceptions,
+        requirements=namespace.requirements,
+    )
 
 
 if __name__ == '__main__':
