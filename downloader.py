@@ -1,11 +1,11 @@
 import requests
 import argparse
 import os
-from pathlib import Path
+from pathlib import Path, PurePath
 from urllib.parse import urlsplit, unquote
 
 
-def fetch_file(path, url, name=None, extension=None, token=None):
+def fetch_file(path, url, name, extension='', token=None):
     images = Path(path)
     images.mkdir(parents=True, exist_ok=True)
     headers = {
@@ -13,12 +13,14 @@ def fetch_file(path, url, name=None, extension=None, token=None):
     }
     response = requests.get(url, headers)
     response.raise_for_status()
-    with open(f'{path}/{name}{extension}', 'wb') as picture:
+    fullpath = PurePath(path).joinpath(name + extension)
+    with open(fullpath, 'wb') as picture:
         picture.write(response.content)
 
 
 def create_bad_links_log(path, url):
-    with open(f'{path}/bad_links.txt', 'a') as txt:
+    fullpath = PurePath(path).joinpath('bad_links.txt')
+    with open(fullpath, 'a') as txt:
         txt.write(f'{url}\n')
 
 
