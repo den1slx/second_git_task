@@ -13,7 +13,7 @@ def fetch_file(path, url, name, extension='', token=None):
     }
     response = requests.get(url, headers)
     response.raise_for_status()
-    fullpath = PurePath(path).joinpath(name + extension)
+    fullpath = PurePath(path).joinpath(f'{name}{extension}')
     with open(fullpath, 'wb') as picture:
         picture.write(response.content)
 

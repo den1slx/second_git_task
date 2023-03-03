@@ -12,15 +12,15 @@ def create_parser():
         help='file name',
     )
     parser.add_argument(
-        '-e',
-        '--exceptions',
+        '-u',
+        '--unacceptable_name_parts',
         help='''It should not be in name. default=('.txt',)''',
         type=tuple,
         default=('.txt',),
     ),
     parser.add_argument(
-        '-r',
-        '--requirements',
+        '-n',
+        '--necessary_name_parts',
         help='''It should be in name. default=('.',)''',
         type=tuple,
         default=('.',),
@@ -28,33 +28,48 @@ def create_parser():
     return parser
 
 
-def get_full_ways(path, requirements=('.',), exceptions=''):
+def get_full_ways(path, necessary_name_parts=('.',), unacceptable_name_parts=''):
     names = os.walk(path)
     paths = []
     for adress, dirs, files in names:
         for names in files:
-            if is_available_name(names, requirements=requirements, exceptions=exceptions):
+            if is_available_name(
+                    names,
+                    necessary_name_parts,
+                    unacceptable_name_parts,
+            ):
                 paths.append((adress, names))
     return paths
 
 
-def is_available_name(name, exceptions='', requirements=''):
+def is_available_name(name, unacceptable_name_parts='', necessary_name_parts=''):
     is_available = True
-    for exception in exceptions:
-        if str(exception) in name:
+    for unacceptable_name_part in unacceptable_name_parts:
+        if str(unacceptable_name_part) in name:
             is_available = False
             break
-    for requirement in requirements:
-        if str(requirement) not in name:
+    for necessary_name_part in necessary_name_parts:
+        if str(necessary_name_part) not in name:
             is_available = False
             break
     return is_available
 
 
-def send_image(token, chat_id, path, image_name_extension, exceptions=('.txt',), requirements='.'):
+def send_image(
+        token,
+        chat_id,
+        path,
+        image_name_extension,
+        unacceptable_name_parts=('.txt',),
+        necessary_name_parts=('.',),
+):
     bot = telegram.Bot(token=token)
     fullpath = PurePath(path).joinpath(image_name_extension)
-    if is_available_name(image_name_extension, exceptions=exceptions, requirements=requirements):
+    if is_available_name(
+            image_name_extension,
+            unacceptable_name_parts=unacceptable_name_parts,
+            necessary_name_parts=necessary_name_parts,
+    ):
         with open(fullpath, 'rb') as foto:
             bot.send_photo(chat_id=chat_id, photo=foto)
 
@@ -71,8 +86,8 @@ def main():
         chat_id,
         path,
         namespace.name,
-        exceptions=namespace.exceptions,
-        requirements=namespace.requirements,
+        unacceptable_name_parts=namespace.unacceptable_name_parts,
+        necessary_name_parts=namespace.necessary_name_parts,
     )
 
 
