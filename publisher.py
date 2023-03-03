@@ -39,16 +39,16 @@ def get_full_ways(path, requirements=('.',), exceptions=''):
 
 
 def is_available_name(name, exceptions='', requirements=''):
-    boolean = True
+    is_available = True
     for exception in exceptions:
         if str(exception) in name:
-            boolean = False
+            is_available = False
             break
     for requirement in requirements:
         if str(requirement) not in name:
-            boolean = False
+            is_available = False
             break
-    return boolean
+    return is_available
 
 
 def send_image(token, chat_id, path, image_name_extension, exceptions=('.txt',), requirements='.'):

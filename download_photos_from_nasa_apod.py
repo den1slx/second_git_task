@@ -44,7 +44,6 @@ def get_image_at_date_from_apod(path, headers, url, mod=''):
     )
 
 
-
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
