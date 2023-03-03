@@ -43,6 +43,15 @@ def get_full_ways(path, necessary_name_parts=('.',), unacceptable_name_parts='')
 
 
 def is_available_name(name, unacceptable_name_parts='', necessary_name_parts=''):
+    """
+Check if the name matches the conditions:
+1) All elements 'unacceptable_name_parts' should not in name.
+2) All elements 'necessary_name_parts' should in name.
+    :param name: type=str. Verifiable name
+    :param unacceptable_name_parts: type=tuple. If any of this in name: return False
+    :param necessary_name_parts: type=tuple. If any of this not in name: return False
+    :return: boolean
+    """
     is_available = True
     for unacceptable_name_part in unacceptable_name_parts:
         if str(unacceptable_name_part) in name:
