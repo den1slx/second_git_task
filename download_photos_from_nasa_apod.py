@@ -14,11 +14,6 @@ def get_current_date():
     return today
 
 
-def get_headers(**kwargs):
-    headers = kwargs
-    return headers
-
-
 def get_images_from_apod(path, headers, url, boolean_hd=False):
     mod = get_hd_mod(boolean_hd)
     path = PurePath(path).joinpath('apod_images').joinpath(mod)
@@ -106,13 +101,13 @@ def main():
     date, start_date, end_date = namespace.date, namespace.start_date, namespace.end_date
     if start_date and not end_date:
         end_date = get_current_date()
-    headers = get_headers(
-        api_key=token,
-        count=count,
-        date=date,
-        start_date=start_date,
-        end_date=end_date,
-    )
+    headers = {
+        'api_key': token,
+        'count': count,
+        'date': date,
+        'start_date': start_date,
+        'end_date': end_date,
+    }
     with suppress(requests.exceptions.HTTPError):
         if date:
             get_image_at_date_from_apod(path, headers, url, hd)
