@@ -14,8 +14,7 @@ def get_current_date():
     return today
 
 
-def get_images_from_apod(path, headers, url, boolean_hd=False):
-    mod = get_hd_mod(boolean_hd)
+def get_images_from_apod(path, headers, url, mod=''):
     path = PurePath(path).joinpath('apod_images').joinpath(mod)
     response = requests.get(url, headers)
     response.raise_for_status()
@@ -31,8 +30,7 @@ def get_images_from_apod(path, headers, url, boolean_hd=False):
         )
 
 
-def get_image_at_date_from_apod(path, headers, url, boolean_hd=False):
-    mod = get_hd_mod(boolean_hd)
+def get_image_at_date_from_apod(path, headers, url, mod=''):
     path = PurePath(path).joinpath('apod_images').joinpath(mod)
     response = requests.get(url, headers)
     response.raise_for_status()
@@ -45,12 +43,6 @@ def get_image_at_date_from_apod(path, headers, url, boolean_hd=False):
         extension=extension,
     )
 
-
-def get_hd_mod(boolean):
-    mod = ''
-    if boolean:
-        mod = 'hd'
-    return mod
 
 
 def create_parser():
@@ -85,7 +77,8 @@ def create_parser():
     parser.add_argument(
         '--hd',
         help='if indicated download hd version',
-        action='store_true',
+        action='store_const',
+        const='hd',
     )
     return parser
 
